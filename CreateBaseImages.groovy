@@ -93,7 +93,6 @@ pipeline{
     }
     post{
         success{
-            echo 'One way or another, I have finished'
             script{
                 parallel parallelStagesMap
                 updateGitlabCommitStatus name: 'build', state: 'success'
@@ -102,7 +101,7 @@ pipeline{
             deleteDir()
         }
         failure{
-            steps{
+            script{
                 updateGitlabCommitStatus name: 'build', state: 'failed'
             }
         }
