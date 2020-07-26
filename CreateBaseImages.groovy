@@ -104,6 +104,8 @@ pipeline{
             script{
                 updateGitlabCommitStatus name: 'build', state: 'failed'
             }
+            cleanWs()
+            deleteDir()
         }
     }
 }
