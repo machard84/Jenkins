@@ -3,7 +3,6 @@ def jobs = [
         "fedora",
         "debian",
         "ubuntu",
-        "gentoo",
 ]
 def parallelStagesMap = jobs.collectEntries{
     ["${it}" : generateStage(it)]
@@ -40,11 +39,6 @@ pipeline{
         FEDORA_GPG = sh(
                 returnStdout: true,
                 script: 'curl -s http://rpmfind.net/linux/fedora/linux/updates/${FEDORA_VERSION}/Everything/x86_64/Packages/f/ | grep -oE fedora-gpg-keys-${FEDORA_VERSION}-[0-9]+.noarch.rpm'
-        )
-        GENTOO_URL = 'http://distfiles.gentoo.org/releases/amd64/autobuilds/current-stage3-amd64/'
-        GENTOO_RELEASE = sh(
-                returnStdout: true,
-                script: 'curl -s http://distfiles.gentoo.org/releases/amd64/autobuilds/current-stage3-amd64/ | grep -oE stage3-amd64-[0-9TZ]+.tar.xz | uniq'
         )
     }
     agent { label "$HOST" }
@@ -83,11 +77,6 @@ pipeline{
                 dir('ubuntu'){
                     sh 'sudo debootstrap --arch amd64 ${UBUNTU_VERSION} ./ http://ftp.ubuntu.com/ubuntu/'
                 }
-            }
-        }
-        stage('Create Gentoo image'){
-            steps{
-                sh 'wget --proxy=${PROXY} -qO- ${GENTOO_URL}/${GENTOO_RELEASE} | docker import - 127.0.0.1:5000/gentoo:latest'
             }
         }
     }
