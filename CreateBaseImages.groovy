@@ -92,8 +92,6 @@ pipeline{
                 updateGitlabCommitStatus name: 'build', state: 'failed'
             }
         }
-        always{
 
-        }
     }
 }
