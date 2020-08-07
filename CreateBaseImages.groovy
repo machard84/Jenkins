@@ -93,8 +93,7 @@ pipeline{
             }
         }
         always{
-#            cleanWs()
-#            deleteDir()
+
         }
     }
 }
