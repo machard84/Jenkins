@@ -1,13 +1,13 @@
 def jobs = [
         "centos",
-        "fedora",
-        "debian",
-        "ubuntu",
 ]
 def parallelStagesMap = jobs.collectEntries{
     ["${it}" : generateStage(it)]
 }
 def generateStage(job){
+    environment {
+        VERSION = assertToString( $jobs + '_version' ).capitalize()
+    }
     return{
          stage("remove cache directory from ${job} image") {
             sh "sudo rm -rf ${WORKSPACE}/${job}/var/cache/*"
