@@ -9,7 +9,7 @@ def parallelStagesMap = jobs.collectEntries{
 }
 def generateStage(job){
     environment {
-        VERSION = assertToString( ${job} + '_version' ).capitalize()
+        VERSION = "${job}_version".capitalize()
     }
     return{
         stage("remove cache directory from ${job} image") {
