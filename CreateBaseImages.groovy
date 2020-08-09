@@ -1,5 +1,8 @@
 def jobs = [
         "centos",
+        "fedora",
+        "debian",
+        "ubuntu",
 ]
 def parallelStagesMap = jobs.collectEntries{
     ["${it}" : generateStage(it)]
