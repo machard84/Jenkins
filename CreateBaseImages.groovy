@@ -8,10 +8,10 @@ def parallelStagesMap = jobs.collectEntries{
     ["${it}" : generateStage(it)]
 }
 def generateStage(job){
-    environment {
-        VERSION = "${job}_version".capitalize()
-    }
     return{
+        environment {
+            VERSION = "${job}_version".capitalize()
+        }
         stage("remove cache directory from ${job} image") {
             sh "sudo rm -rf ${WORKSPACE}/${job}/var/cache/*"
         }
