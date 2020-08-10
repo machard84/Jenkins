@@ -13,7 +13,7 @@ def generateStage(job){
             sh "sudo rm -rf ${WORKSPACE}/${job}/var/cache/*"
         }
         stage("import ${job} image") {
-            sh "tar -C ${WORKSPACE}/${job} -c . | docker import - 127.0.0.1:5000/${job}:latest"
+            sh "sudo tar -C ${WORKSPACE}/${job} -c . | docker import - 127.0.0.1:5000/${job}:latest"
         }
         stage("push ${job} image to cluster local repository") {
             sh "docker image push 127.0.0.1:5000/${job}:latest"
