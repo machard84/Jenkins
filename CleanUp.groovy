@@ -9,7 +9,7 @@ def parallelStagesMap = jobs.collectEntries{
 }
 def generateStage(job){
     return{
-        stage("Clean up docker images on: ${HOST}") {
+        stage("Clean up docker ${job} on: ${HOST}") {
             withEnv(['PATH+EXTRA=/usr/bin']) {
                 sh "/usr/bin/docker ${job} prune -f"
             }
