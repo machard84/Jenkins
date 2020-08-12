@@ -9,13 +9,6 @@ def parallelStagesMap = jobs.collectEntries{
 }
 def generateStage(job){
     return{
-        stage("Debug info for: ${HOST}"){
-            sh 'cat /etc/hostname'
-            sh 'echo ${PATH}'
-            sh 'whoami'
-            sh 'pwd'
-            sh 'ls /usr/bin -l'
-        }
         stage("Clean up docker images on: ${HOST}") {
             withEnv(['PATH+EXTRA=/usr/bin']) {
                 sh "/usr/bin/docker ${job} prune -f"
@@ -28,7 +21,6 @@ pipeline{
     stages{
         stage('CleanUp'){
             steps{
-                sh 'echo Cleaning up'
                 script {
                     parallel parallelStagesMap
                 }
@@ -37,7 +29,6 @@ pipeline{
     }
     post{
         success {
-            echo 'One way or another, I have finished'
             cleanWs()
             deleteDir()
         }
