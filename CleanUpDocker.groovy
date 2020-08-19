@@ -11,7 +11,7 @@ def generateStage(job){
     return{
         stage("Clean up docker ${job} on: ${HOST}") {
             withEnv(['PATH+EXTRA=/usr/bin']) {
-                sh "/usr/bin/docker ${job} prune -f"
+                sh "/usr/bin/docker ${job} prune -a"
             }
         }
     }
