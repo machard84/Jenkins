@@ -8,7 +8,7 @@ pipeline{
         }
         stage('Clean docker images'){
             steps{
-                sh 'docker image prune -f'
+                sh 'docker image prune -a'
             }
         }
         stage('Clean docker volumes'){
