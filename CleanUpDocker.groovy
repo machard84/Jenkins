@@ -16,7 +16,7 @@ pipeline{
                 sh 'docker volume prune -f'
             }
         }
-        stage('Clean docker volumes'){
+        stage('Clean docker networks'){
             steps{
                 sh 'docker network prune -f'
             }
