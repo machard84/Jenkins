@@ -1,29 +1,24 @@
-def jobs = [
-        'container',
-        'image',
-        'network',
-        'volume',
-]
-def parallelStagesMap = jobs.collectEntries{
-    ["${it}" : generateStage(it)]
-}
-def generateStage(job){
-    return{
-        stage("Clean up docker ${job} on: ${HOST}") {
-            withEnv(['PATH+EXTRA=/usr/bin']) {
-                sh "/usr/bin/docker ${job} prune -a"
-            }
-        }
-    }
-}
 pipeline{
     agent { label "${HOST}"}
     stages{
-        stage('CleanUp'){
+        stage('Clean docker containers'){
             steps{
-                script {
-                    parallel parallelStagesMap
-                }
+                docker container prune -f
+            }
+        }
+        stage('Clean docker containers'){
+            steps{
+                docker image prune -f
+            }
+        }
+        stage('Clean docker volumes'){
+            steps{
+                docker volume prune -f
+            }
+        }
+        stage('Clean docker volumes'){
+            steps{
+                docker network prune -f
             }
         }
     }
