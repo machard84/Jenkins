@@ -6,7 +6,7 @@ pipeline{
                 sh 'docker container prune -f'
             }
         }
-        stage('Clean docker containers'){
+        stage('Clean docker images'){
             steps{
                 sh 'docker image prune -f'
             }
