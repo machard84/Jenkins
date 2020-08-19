@@ -3,22 +3,22 @@ pipeline{
     stages{
         stage('Clean docker containers'){
             steps{
-                docker container prune -f
+                sh 'docker container prune -f'
             }
         }
         stage('Clean docker containers'){
             steps{
-                docker image prune -f
+                sh 'docker image prune -f'
             }
         }
         stage('Clean docker volumes'){
             steps{
-                docker volume prune -f
+                sh 'docker volume prune -f'
             }
         }
         stage('Clean docker volumes'){
             steps{
-                docker network prune -f
+                sh 'docker network prune -f'
             }
         }
     }
