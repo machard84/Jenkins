@@ -50,6 +50,10 @@ pipeline{
                     sh "sudo rpm -ivh --force --root=${WORKSPACE}/centos --nodeps ${CENTOS_RELEASE}"
                     sh "sudo yum --installroot=${WORKSPACE}/centos --noplugins --nogpgcheck --releasever=7 install -y yum yum-plugin-ovl"
                 }
+                dir('centos/etc/yum.repos.d/'){
+                    sh "sudo rm -f *.repo"
+                    git credentialsId: 'b1b166e1-88c1-475a-b784-d5c5682d68c4', url: 'http://gitlab.chardma.org.uk/mac/centos.git'
+                }
             }
         }
         stage('Create Fedora image') {
