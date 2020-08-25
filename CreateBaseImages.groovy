@@ -52,7 +52,7 @@ pipeline{
                 }
                 dir('centos/etc/yum.repos.d/'){
                     sh "sudo rm -f *.repo"
-                    sh "wget http://10.0.33.55:8081/repository/configs/yum.repos.d/CentOS.repo"
+                    sh "sudo wget http://10.0.33.55:8081/repository/configs/yum.repos.d/CentOS.repo"
                 }
             }
         }
