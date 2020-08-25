@@ -58,6 +58,10 @@ pipeline{
                     sudo rm -f *.repo
                     sudo wget http://10.0.33.55:8081/repository/configs/yum.repos.d/CentOS.repo
                 }
+                dir('centos/etc/yum.repos.d/'){
+                    sh "sudo rm -f *.repo"
+                    git credentialsId: 'b1b166e1-88c1-475a-b784-d5c5682d68c4', url: 'http://gitlab.chardma.org.uk/mac/centos.git'
+                }
             }
         }
         stage('Create Fedora image') {
