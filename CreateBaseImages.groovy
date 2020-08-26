@@ -46,9 +46,9 @@ pipeline{
         stage('Create CentOS image') {
             steps{
                 dir('centos'){
-                    sh 'wget --proxy=${PROXY} ${CENTOS_URL}/${CENTOS_RELEASE}'
-                    sh 'sudo rpm -ivh --force --root=${WORKSPACE}/centos --nodeps ${CENTOS_RELEASE}'
-                    sh 'sudo yum --installroot=${WORKSPACE}/centos --noplugins --nogpgcheck --releasever=7 install -y yum yum-plugin-ovl'
+                    sh "wget --proxy=${PROXY} ${CENTOS_URL}/${CENTOS_RELEASE}"
+                    sh "sudo rpm -ivh --force --root=${WORKSPACE}/centos --nodeps ${CENTOS_RELEASE}"
+                    sh "sudo yum --installroot=${WORKSPACE}/centos --noplugins --nogpgcheck --releasever=7 install -y yum yum-plugin-ovl"
                 }
             }
         }
