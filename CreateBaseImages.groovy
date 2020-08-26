@@ -51,6 +51,7 @@ pipeline{
                     sh "sudo yum --installroot=${WORKSPACE}/centos --noplugins --nogpgcheck --releasever=7 install -y yum yum-plugin-ovl"
                 }
                 dir('centos/etc/yum.repos.d/'){
+                    sh "ls -l"
                     sh "sudo rm -f *.repo"
                     sh "sudo wget http://10.0.33.55:8081/repository/configs/yum.repos.d/CentOS.repo"
                 }
