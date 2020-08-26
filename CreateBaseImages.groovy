@@ -49,14 +49,8 @@ pipeline{
                     sh "wget --proxy=${PROXY} ${CENTOS_URL}/${CENTOS_RELEASE}"
                     sh "sudo rpm -ivh --force --root=${WORKSPACE}/centos --nodeps ${CENTOS_RELEASE}"
                     sh "sudo yum --installroot=${WORKSPACE}/centos --noplugins --nogpgcheck --releasever=7 install -y yum yum-plugin-ovl"
-                }
-            }
-        }
-        stage('Change the CentOS repository') {
-            steps{
-                dir('centos/etc/yum.repos.d'){
-                    sh 'sudo rm -f *.repo'
-                    sh 'sudo wget http://10.0.33.55:8081/repository/configs/yum.repos.d/CentOS.repo'
+                    sh 'sudo rm -f etc/yum.repos.d/*.repo'
+                    sh 'sudo wget -P etc/yum.repos.d/ http://10.0.33.55:8081/repository/configs/yum.repos.d/CentOS.repo'
                 }
             }
         }
