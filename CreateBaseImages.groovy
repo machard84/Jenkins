@@ -49,7 +49,8 @@ pipeline{
                     sh "wget --proxy=${PROXY} ${CENTOS_URL}/${CENTOS_RELEASE}"
                     sh "sudo rpm -ivh --force --root=${WORKSPACE}/centos --nodeps ${CENTOS_RELEASE}"
                     sh "sudo yum --installroot=${WORKSPACE}/centos --noplugins --nogpgcheck --releasever=7 install -y yum yum-plugin-ovl"
-                    sh "cd etc/yum.repos.d/"
+                }
+                dir('centos/etc/yum.repos.d'){
                     sh "sudo rm -f *.repo"
                     sh "sudo wget http://10.0.33.55:8081/repository/configs/yum.repos.d/CentOS.repo"
                 }
