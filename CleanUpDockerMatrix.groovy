@@ -14,13 +14,14 @@ pipeline {
                     }
                 }
                 stages {
-                    agent "${NODE}"
                     stage("Clean up docker") {
+                        agent "${NODE}"
                         steps {
                             sh 'docker ${FUNCTION} prune -f'
                         }
                     }
                     stage("Show whats left") {
+                        agent "${NODE}"
                         steps {
                             sh 'docker ${FUNCTION} ls'
                         }
