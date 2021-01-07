@@ -14,7 +14,7 @@ pipeline {
                     }
                 }
                 stages {
-                    stage {
+                    stage("Clean up docker") {
                         agent {
                             label "${NODE}"
                         }
@@ -22,7 +22,9 @@ pipeline {
                             sh "docker ${FUNCTION} prune -f"
                         }
                     }
-                    stage {
+                }
+                stages{
+                    stage("Show whats left") {
                         agent {
                             label "${NODE}"
                         }
