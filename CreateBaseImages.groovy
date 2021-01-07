@@ -29,7 +29,7 @@ pipeline{
                     sh "sudo rpm -ivh --force --root=${WORKSPACE}/centos --nodeps ${CENTOS_RELEASE}"
                     sh "sudo yum --installroot=${WORKSPACE}/centos --noplugins --nogpgcheck --releasever=7 install -y yum yum-plugin-ovl"
                     sh 'sudo rm -f etc/yum.repos.d/*.repo'
-                    sh 'sudo wget -P etc/yum.repos.d/ https://nexus.chardma.org.uk/repository/configs/yum.repos.d/CentOS.repo'
+                    sh 'sudo wget -P etc/yum.repos.d/ http://nexus.chardma.org.uk/repository/configs/yum.repos.d/CentOS.repo'
                 }
             }
         }
