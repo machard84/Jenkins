@@ -41,4 +41,10 @@ pipeline {
             }
         }
     }
+    post{
+        success {
+            cleanWs()
+            deleteDir()
+        }
+    }
 }
