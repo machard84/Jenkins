@@ -24,7 +24,7 @@ pipeline {
                     }
                     stage("Show whats left") {
                         agent {
-                            label "${NODE   }"
+                            label "${NODE}"
                         }
                         steps {
                             sh 'docker ${FUNCTION} ls'
