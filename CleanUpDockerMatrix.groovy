@@ -4,16 +4,12 @@ def tasks = [
     "network",
     "volume",
 ]
-def parallelStagesMap = tasks.collectEntries{
-    ["${it}" : generateStage(it)]
-}
-def generateStage(task){
-    return{
-        stage("Clean up ${task}") {
-            sh "docker ${task} prune -f"
-        }
-    }
-}
+def hosts = [
+    "container",
+    "volume",
+    "image",
+    "network"
+]
 pipeline {
     agent none
     stages {
@@ -22,11 +18,11 @@ pipeline {
                 axes {
                     axis {
                         name 'FUNCTION'
-                        values "container", "volume", "image", "network"
+                        values "${tasks}"
                     }
                     axis {
                          name 'NODE'
-                         values "rpi2", "predator", "tristram"
+                         values "${hosts}"
                     }
                 }
                 stages {
@@ -42,7 +38,9 @@ pipeline {
                         agent {
                             label "${NODE}"
                         }
-                        parallel parallelStagesMap
+                        steps {
+                            sh "docker ${FUNCTION} prune -f"
+                        }
                     }
                     stage("Show whats left") {
                         agent {
