@@ -72,13 +72,19 @@ pipeline{
                 }
                 stages{
                     stage("remove cache directory from ${job} image") {
-                        sh "sudo rm -rf ${WORKSPACE}/${OS}/var/cache/*"
+                        steps {
+                            sh "sudo rm -rf ${WORKSPACE}/${OS}/var/cache/*"
+                        }
                     }
                     stage("import ${job} image") {
-                        sh "sudo tar -C ${WORKSPACE}/${OS} -c . | docker import - registry.chardma.org.uk:8443/${OS}:latest"
+                        steps {
+                            sh "sudo tar -C ${WORKSPACE}/${OS} -c . | docker import - registry.chardma.org.uk:8443/${OS}:latest"
+                        }
                     }
                     stage("push ${job} image to cluster local repository") {
-                        sh "docker image push registry.chardma.org.uk:8443/${OS}:latest"
+                        steps {
+                            sh "docker image push registry.chardma.org.uk:8443/${OS}:latest"
+                        }
                     }
                 }
             }
