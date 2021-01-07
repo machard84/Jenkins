@@ -19,12 +19,12 @@ pipeline {
                 stages {
                     stage("Clean up docker") {
                         steps {
-                            docker ${FUNCTION} prune -f
+                            sh 'docker ${FUNCTION} prune -f'
                         }
                     }
                     stage("Show whats left") {
                         steps {
-                            docker ${FUNCTION} ls
+                            sh 'docker ${FUNCTION} ls'
                         }
                     }
                 }
