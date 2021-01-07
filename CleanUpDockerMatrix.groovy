@@ -1,7 +1,7 @@
 pipeline {
     agent none
     stages {
-        stage("foo") {
+        stage("Docker Clean-Up Matrix") {
             matrix {
                 axes {
                     axis {
@@ -20,13 +20,6 @@ pipeline {
                         }
                         steps {
                             sh "docker ${FUNCTION} prune -f"
-                        }
-                    }
-                    stage("Show whats left") {
-                        agent {
-                            label "${NODE}"
-                        }
-                        steps {
                             sh 'docker ${FUNCTION} ls'
                         }
                     }
