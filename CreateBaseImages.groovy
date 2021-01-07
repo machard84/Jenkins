@@ -67,7 +67,7 @@ pipeline{
                         values  "centos",
                                 "fedora",
                                 "debian",
-                                "ubuntu",
+                                "ubuntu"
                     }
                 }
                 stages{
