@@ -14,7 +14,7 @@ pipeline {
                     }
                 }
                 stages {
-                    stage("Clean up ${FUNCTION} on ${NODE}") {
+                    stage("Clean up") {
                         agent {
                             label "${NODE}"
                         }
