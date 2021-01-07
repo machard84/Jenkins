@@ -3,28 +3,29 @@ pipeline {
     stages {
         stage("foo") {
             matrix {
+                node {
+                    label "${NODE}"
+                }
                 axes {
                     axis {
                         name 'FUNCTION'
-                        values "image", "container", "volume", "network"
+                        values "container", "volume", "image", "network"
                     }
                     axis {
                         name 'NODE'
-                        values "rpi2", "adh-030", "tristram"
+                        values "rpi2", "predator", "tristram"
                     }
                 }
                 stages {
-                    stage("first") {
+                    stage("Clean up docker") {
                         steps {
-                            echo "First branch"
-                            echo "FUNCTION=${FUNCTION}"
-                            echo "HOSTNAME=${NODE}"
+                            docker ${FUNCTION} prune -f
                         }
                     }
                 }
-                stage("second") {
+                stage("Show whats left") {
                     steps {
-        				echo "Second branch"
+        				docker ${FUNCTION} ls
                     }
                 }
             }
