@@ -1,3 +1,19 @@
+def tasks = [
+    "container",
+    "image",
+    "network",
+    "volume",
+]
+def parallelStagesMap = tasks.collectEntries{
+    ["${it}" : generateStage(it)]
+}
+def generateStage(task){
+    return{
+        stage("Clean up ${task}") {
+            sh "docker ${task} prune -f"
+        }
+    }
+}
 pipeline {
     agent none
     stages {
@@ -27,7 +43,7 @@ pipeline {
                             label "${NODE}"
                         }
                         steps {
-                            sh 'docker ${FUNCTION} prune -f'
+                            parallel parallelStagesMap
                         }
                     }
                     stage("Show whats left") {
