@@ -8,14 +8,14 @@ pipeline {
                          name 'NODE'
                          values "rpi2",
                                 "tristram",
-                                "predator",
+                                "predator"
                     }
                     axis {
                         name 'FUNCTION'
                         values  "container",
                                 "image",
                                 "network",
-                                "volume",
+                                "volume"
                     }
                 }
                 stages {
