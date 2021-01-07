@@ -42,9 +42,7 @@ pipeline {
                         agent {
                             label "${NODE}"
                         }
-                        steps {
-                            parallel parallelStagesMap
-                        }
+                        parallel parallelStagesMap
                     }
                     stage("Show whats left") {
                         agent {
