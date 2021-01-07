@@ -15,7 +15,9 @@ pipeline {
                 }
                 stages {
                     stage("Clean up docker") {
-                        agent "${NODE}"
+                        agent {
+                            "${NODE}"
+                        }
                         steps {
                             sh 'docker ${FUNCTION} prune -f'
                         }
