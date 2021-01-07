@@ -22,8 +22,6 @@ pipeline {
                             sh "docker ${FUNCTION} prune -f"
                         }
                     }
-                }
-                stages{
                     stage("Show whats left") {
                         agent {
                             label "${NODE}"
