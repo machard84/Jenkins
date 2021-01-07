@@ -91,22 +91,4 @@ pipeline{
             }
         }
     }
-    post{
-        success{
-            script{
-                parallel parallelStagesMap
-                updateGitlabCommitStatus name: 'build', state: 'success'
-                cleanWs()
-                deleteDir()
-            }
-        }
-        failure{
-            script{
-                updateGitlabCommitStatus name: 'build', state: 'failed'
-                cleanWs()
-                deleteDir()
-            }
-        }
-
-    }
 }
