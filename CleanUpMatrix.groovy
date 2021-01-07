@@ -21,10 +21,10 @@ pipeline {
                             echo "HOSTNAME=${NODE}"
                         }
                     }
-                }
-                stage("second") {
-                    steps {
-        				echo "Second branch"
+                    stage("second") {
+                        steps {
+        			    	echo "Second branch"
+                        }
                     }
                 }
             }
