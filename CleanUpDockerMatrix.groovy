@@ -24,7 +24,7 @@ pipeline {
                             label "${NODE}"
                         }
                         steps {
-                            sh "docker ${FUNCTION} prune -f"
+                            sh "docker system prune -f"
                             sh "docker ${FUNCTION} ls"
                         }
                     }
