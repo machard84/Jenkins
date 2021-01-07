@@ -1,5 +1,6 @@
 pipeline{
     environment {
+        REGISTRY = 'registry.chardma.org.uk:8443'
         CENTOS_URL = 'http://mirror.centos.org/centos/${CENTOS_VERSION}/os/x86_64/Packages/'
         CENTOS_RELEASE = sh(
                 returnStdout: true,
@@ -71,9 +72,6 @@ pipeline{
                     }
                 }
                 stages{
-                    environment {
-                        REGISTRY = 'registry.chardma.org.uk:8443'
-                    }
                     stage("remove cache directory from image") {
                         steps {
                             sh "sudo rm -rf ${WORKSPACE}/${OS}/var/cache/*"
