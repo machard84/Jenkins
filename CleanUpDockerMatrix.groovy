@@ -5,12 +5,12 @@ pipeline {
             matrix {
                 axes {
                     axis {
-                        name 'FUNCTION'
-                        values "container", "image", "network", "volume"
-                    }
-                    axis {
                          name 'NODE'
                          values "rpi2", "tristram", "predator"
+                    }
+                    axis {
+                        name 'FUNCTION'
+                        values "container", "image", "network", "volume"
                     }
                 }
                 stages {
@@ -20,7 +20,7 @@ pipeline {
                         }
                         steps {
                             sh "docker ${FUNCTION} prune -f"
-                            sh 'docker ${FUNCTION} ls'
+                            sh "docker ${FUNCTION} ls"
                         }
                     }
                 }
