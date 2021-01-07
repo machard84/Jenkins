@@ -14,7 +14,7 @@ pipeline {
                     }
                 }
                 stages {
-                    stage("Clean up docker") {
+                    stage("Clean up ${FUNCTION} on ${NODE}") {
                         agent {
                             label "${NODE}"
                         }
