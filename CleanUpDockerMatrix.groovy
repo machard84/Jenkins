@@ -22,10 +22,9 @@ pipeline {
                             docker ${FUNCTION} prune -f
                         }
                     }
-                }
-                stage("Show whats left") {
-                    steps {
-                        docker ${FUNCTION} ls
+                    stage("Show whats left") {
+                        steps {
+                            docker ${FUNCTION} ls
                     }
                 }
             }
