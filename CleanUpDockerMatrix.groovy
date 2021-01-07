@@ -14,6 +14,14 @@ pipeline {
                     }
                 }
                 stages {
+                    stage("Get Hostname") {
+                        agent {
+                            label "${NODE}"
+                        }
+                        steps {
+                            sh 'hostname -f'
+                        }
+                    }
                     stage("Clean up docker") {
                         agent {
                             label "${NODE}"
