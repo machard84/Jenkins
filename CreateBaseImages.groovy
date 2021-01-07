@@ -3,21 +3,21 @@ pipeline{
         REGISTRY = 'registry.chardma.org.uk:8443'
         CENTOS_URL = 'http://mirror.centos.org/centos/${CENTOS_VERSION}/os/x86_64/Packages/'
         CENTOS_RELEASE = sh(
-                returnStdout: true,
-                script: 'curl -s  http://mirror.centos.org/centos/${CENTOS_VERSION}/os/x86_64/Packages/ | grep -oE centos-release-[a-z0-9.-]+.centos.x86_64.rpm | uniq'
+            returnStdout: true,
+            script: 'curl -s  http://mirror.centos.org/centos/${CENTOS_VERSION}/os/x86_64/Packages/ | grep -oE centos-release-[a-z0-9.-]+.centos.x86_64.rpm | uniq'
         )
         FEDORA_URL = 'https://rpmfind.net/linux/fedora/linux/releases/${FEDORA_VERSION}/Everything/x86_64/os/Packages/f/'
         FEDORA_RELEASE = sh(
-                returnStdout: true,
-                script: 'curl -s https://rpmfind.net/linux/fedora/linux/releases/${FEDORA_VERSION}/Everything/x86_64/os/Packages/f/ | grep -oE fedora-release-[0-9-]+.noarch.rpm'
+            returnStdout: true,
+            script: 'curl -s https://rpmfind.net/linux/fedora/linux/releases/${FEDORA_VERSION}/Everything/x86_64/os/Packages/f/ | grep -oE fedora-release-[0-9-]+.noarch.rpm'
         )
         FEDORA_REPOS = sh(
-                returnStdout: true,
-                script: 'curl -s https://rpmfind.net/linux/fedora/linux/releases/${FEDORA_VERSION}/Everything/x86_64/os/Packages/f/ | grep -oE fedora-repos-${FEDORA_VERSION}-[0-9]+.noarch.rpm'
+            returnStdout: true,
+            script: 'curl -s https://rpmfind.net/linux/fedora/linux/releases/${FEDORA_VERSION}/Everything/x86_64/os/Packages/f/ | grep -oE fedora-repos-${FEDORA_VERSION}-[0-9]+.noarch.rpm'
         )
         FEDORA_GPG = sh(
-                returnStdout: true,
-                script: 'curl -s https://rpmfind.net/linux/fedora/linux/releases/${FEDORA_VERSION}/Everything/x86_64/os/Packages/f/ | grep -oE fedora-gpg-keys-${FEDORA_VERSION}-[0-9]+.noarch.rpm'
+            returnStdout: true,
+            script: 'curl -s https://rpmfind.net/linux/fedora/linux/releases/${FEDORA_VERSION}/Everything/x86_64/os/Packages/f/ | grep -oE fedora-gpg-keys-${FEDORA_VERSION}-[0-9]+.noarch.rpm'
         )
     }
     agent { label "$HOST" }
