@@ -1,15 +1,3 @@
-def tasks = [
-    "container",
-    "image",
-    "network",
-    "volume",
-]
-def hosts = [
-    "container",
-    "volume",
-    "image",
-    "network"
-]
 pipeline {
     agent none
     stages {
@@ -18,11 +6,11 @@ pipeline {
                 axes {
                     axis {
                         name 'FUNCTION'
-                        values "${tasks}"
+                        values "container", "image", "network", "volume"
                     }
                     axis {
                          name 'NODE'
-                         values "${hosts}"
+                         values "container", "volume", "image", "network"
                     }
                 }
                 stages {
