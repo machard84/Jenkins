@@ -1,25 +1,3 @@
-def jobs = [
-        "centos",
-        "fedora",
-        "debian",
-        "ubuntu",
-]
-def parallelStagesMap = jobs.collectEntries{
-    ["${it}" : generateStage(it)]
-}
-def generateStage(job){
-    return{
-        stage("remove cache directory from ${job} image") {
-            sh "sudo rm -rf ${WORKSPACE}/${job}/var/cache/*"
-        }
-        stage("import ${job} image") {
-            sh "sudo tar -C ${WORKSPACE}/${job} -c . | docker import - 127.0.0.1:5000/${job}:latest"
-        }
-        stage("push ${job} image to cluster local repository") {
-            sh "docker image push 127.0.0.1:5000/${job}:latest"
-        }
-    }
-}
 pipeline{
     environment {
         CENTOS_URL = 'http://mirror.centos.org/centos/${CENTOS_VERSION}/os/x86_64/Packages/'
@@ -78,6 +56,30 @@ pipeline{
             steps{
                 dir('ubuntu'){
                     sh 'sudo debootstrap --arch amd64 ${UBUNTU_VERSION} ./ http://ftp.ubuntu.com/ubuntu/'
+                }
+            }
+        }
+        stage('Matrix push docker images'){
+            matrix{
+                axes{
+                    axis{
+                        name    OS
+                        values  "centos",
+                                "fedora",
+                                "debian",
+                                "ubuntu",
+                    }
+                }
+                stages{
+                    stage("remove cache directory from ${job} image") {
+                        sh "sudo rm -rf ${WORKSPACE}/${OS}/var/cache/*"
+                    }
+                    stage("import ${job} image") {
+                        sh "sudo tar -C ${WORKSPACE}/${OS} -c . | docker import - registry.chardma.org.uk:8443/${OS}:latest"
+                    }
+                    stage("push ${job} image to cluster local repository") {
+                        sh "docker image push registry.chardma.org.uk:8443/${OS}:latest"
+                    }
                 }
             }
         }
