@@ -11,7 +11,6 @@ pipeline{
                 returnStdout: true,
                 script: 'curl -s https://rpmfind.net/linux/fedora/linux/releases/${FEDORA_VERSION}/Everything/x86_64/os/Packages/f/ | grep -oE fedora-release-[0-9-]+.noarch.rpm'
         )
-
         FEDORA_REPOS = sh(
                 returnStdout: true,
                 script: 'curl -s https://rpmfind.net/linux/fedora/linux/releases/${FEDORA_VERSION}/Everything/x86_64/os/Packages/f/ | grep -oE fedora-repos-${FEDORA_VERSION}-[0-9]+.noarch.rpm'
