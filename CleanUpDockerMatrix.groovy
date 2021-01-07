@@ -10,22 +10,31 @@ pipeline {
                                 "tristram",
                                 "predator"
                     }
-                    axis {
-                        name 'FUNCTION'
-                        values  "container",
-                                "image",
-                                "network",
-                                "volume"
-                    }
                 }
                 stages {
+                    stage("Get docker system info pre cleanup"){
+                        agent {
+                            label "${NODE}"
+                        }
+                        steps{
+                            sh "docker system df"
+                            sh "docker system info"
+                        }
+                    }
                     stage("Clean up") {
                         agent {
                             label "${NODE}"
                         }
                         steps {
                             sh "docker system prune -f"
-                            sh "docker ${FUNCTION} ls"
+                        }
+                    }
+                    stage("Get docker system info post cleanup") {
+                        agent {
+                            label "${NODE}"
+                        }
+                        steps {
+                            sh "docker system df"
                         }
                     }
                 }
