@@ -25,7 +25,7 @@ pipeline {
                 }
                 stage("Show whats left") {
                     steps {
-        				docker ${FUNCTION} ls
+                        docker ${FUNCTION} ls
                     }
                 }
             }
