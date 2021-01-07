@@ -10,7 +10,7 @@ pipeline {
                     }
                     axis {
                          name 'NODE'
-                         values "container", "volume", "image", "network"
+                         values "rpi2", "tristram", "predator"
                     }
                 }
                 stages {
