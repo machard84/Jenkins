@@ -88,11 +88,11 @@ pipeline{
                         }
                     }
                 }
-                stage("Chown the workdirs so we can clean up"){
-                    steps {
-                        sh 'sudo chown jenkins: ${WORKSPACE} -R'
-                    }
-                }
+            }
+        }
+        stage("Chown the workdirs so we can clean up"){
+            steps {
+                sh 'sudo chown jenkins: ${WORKSPACE} -R'
             }
         }
     }
