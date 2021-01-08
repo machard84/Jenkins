@@ -93,20 +93,15 @@ pipeline{
     }
     post {
         always {
-            echo 'One way or another, I have finished'
-            deleteDir() /* clean up our workspace */
+            echo 'Clean up'
+            cleanWs()
+            deleteDir()
         }
         success {
-            echo 'I succeeded!'
-        }
-        unstable {
-            echo 'I am unstable :/'
+            echo 'Success'
         }
         failure {
-            echo 'I failed :('
-        }
-        changed {
-            echo 'Things were different before...'
+            echo 'Fail'
         }
     }
 }
