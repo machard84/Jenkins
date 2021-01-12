@@ -1,0 +1,12 @@
+[ntop]
+name=ntop packages
+baseurl=http://packages.ntop.org/centos/$releasever/$basearch/
+enabled=1
+gpgcheck=1
+gpgkey=http://packages.ntop.org/centos/RPM-GPG-KEY-deri
+[ntop-noarch]
+name=ntop packages
+baseurl=http://packages.ntop.org/centos/$releasever/noarch/
+enabled=1
+gpgcheck=1
+gpgkey=http://packages.ntop.org/centos/RPM-GPG-KEY-deri

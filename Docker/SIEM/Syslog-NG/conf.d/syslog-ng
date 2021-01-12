@@ -1,0 +1,7 @@
+SYSLOGNG_OPTS="-u nobody -g nobody"
+
+if [ ! -e /var/run/syslog-ng.pid ] then
+        touch /var/run/syslog-ng.pid
+fi
+chown nobody /var/run/syslog-ng.pid
+chmod 0664 /var/run/syslog-ng.pid

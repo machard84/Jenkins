@@ -1,0 +1,34 @@
+<!doctype html>
+<html>
+  <head>
+    <h1>This is the stats page</h1>
+  </head>
+  <table border="1" cellpadding="5" cellspacing="5" width="100%" class="table" id="stats">
+    <tbody>
+      {% for row in table_size %}
+        <tr>
+          {% for r in row %}
+          <td>{{ r }}</td>
+        </tr>
+          {% else %}
+          <td>{{ r }}</td>
+        </tr>
+          {% endfor %}
+      {% endfor %}
+      {% for row in statements_current %}
+        <tr>
+          {% for r in row %}
+          <td>{{ r }}</td>
+          {% endfor %}
+        </tr>
+      {% endfor %}
+      {% for row in transactions_current %}
+        <tr>
+          {% for r in row %}
+          <td>{{ r }}</td>
+          {% endfor %}
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</html>

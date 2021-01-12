@@ -1,0 +1,32 @@
+<!doctype html>
+<html>
+  <head>
+    <h1>
+      Number of logs in this table: {{ count }}
+    </h1>
+  </head>
+  <table border="1" cellpadding="5" cellspacing="5" width="100%" class="table" id="syslog">
+    <thead>
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Host</th>
+        <th scope="col">Facility</th>
+        <th scope="col">Priority</th>
+        <th scope="col">Level</th>
+        <th scope="col">Tag</th>
+        <th scope="col">Date Time</th>
+        <th scope="col">Program</th>
+        <th scope="col">Msg</th>
+      </tr
+    </thead>
+    <tbody>
+      {% for row in data %}
+        <tr>
+          {% for d in row %}
+          <td>{{ d }}</td>
+          {% endfor %}
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</html>

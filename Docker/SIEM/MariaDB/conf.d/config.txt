@@ -1,0 +1,29 @@
+FLUSH PRIVILEGES;
+USE mysql;
+
+##Configure Root User
+ALTER USER 'root'@'localhost' IDENTIFIED BY '';
+DELETE FROM mysql.user WHERE USER='root' AND HOST NOT IN ('localhost', '127.0.0.1', '::1');
+
+##Configure ntopng user
+CREATE USER IF NOT EXISTS ntopng IDENTIFIED WITH mysql_native_password BY 'ntopng';
+CREATE DATABASE IF NOT EXISTS ntopng;
+GRANT ALL PRIVILEGES ON ntopng.* TO 'ntopng'@'%' WITH GRANT OPTION;
+
+##Configure syslog user
+CREATE USER IF NOT EXISTS syslog IDENTIFIED WITH mysql_native_password BY 'syslog';
+CREATE DATABASE IF NOT EXISTS syslog;
+GRANT ALL PRIVILEGES ON syslog.* TO 'syslog'@'%' WITH GRANT OPTION;
+
+##Configure sphinxsearch user
+CREATE USER IF NOT EXISTS sphinxsearch IDENTIFIED WITH mysql_native_password BY 'sphinxsearch';
+GRANT ALL ON *.* TO 'sphinxsearch'@'%' WITH GRANT OPTION ;
+
+##Configure web user
+CREATE USER IF NOT EXISTS web IDENTIFIED WITH mysql_native_password BY 'web';
+CREATE DATABASE IF NOT EXISTS web;
+GRANT ALL PRIVILEGES ON web.* TO 'web'@'%' WITH GRANT OPTION;
+GRANT SELECT ON *.* TO 'web'@'%' WITH GRANT OPTION ;
+# GRANT SELECT ON ntopng.* TO 'web'@'%' WITH GRANT OPTION ;
+
+FLUSH PRIVILEGES;

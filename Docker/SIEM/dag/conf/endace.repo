@@ -1,0 +1,5 @@
+[endacerepo]
+name=Endace Repository
+baseurl=http://nexus.chardma.org.uk:8081/repository/endace/
+enabled=1
+gpgcheck=0
