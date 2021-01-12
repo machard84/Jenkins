@@ -1,0 +1,33 @@
+pipeline {
+  environment {
+    registry = "127.0.0.1:5000"
+    dockerImage = 'syslog-ng'
+  }
+  agent any
+  stages {
+    stage('Cloning Git') {
+      steps {
+        git 'http://gitlab.chardma.org.uk/mac/syslog-ng.git'
+      }
+    }
+    stage('Building image') {
+      steps{
+        script {
+          dockerImage = docker.build registry + ":$BUILD_NUMBER"
+        }
+      }
+    }
+    stage('Deploy Image') {
+      steps{
+        script {
+            dockerImage.push()
+        }
+      }
+    }
+    stage('Remove Unused docker image') {
+      steps{
+        sh "docker rmi $registry:$BUILD_NUMBER"
+      }
+    }
+  }
+}
