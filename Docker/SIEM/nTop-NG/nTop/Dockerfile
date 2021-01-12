@@ -1,8 +1,8 @@
-FROM            127.0.0.1:5000/centos:7
+FROM            registry.chardma.org.uk:8443/centos:7
 MAINTAINER      Mark Chard (machard.1984@gmail.com)
 RUN             yum install -y -q shadow-utils wget
-RUN             wget -P /etc/yum.repos.d/ https://nexus.chardma.org.uk/repository/configs/yum.repos.d/ntop-ng.repo
-RUN             wget -P /etc/yum.repos.d/ https://nexus.chardma.org.uk/repository/configs/yum.repos.d/epel.repo
+RUN             wget -P /etc/yum.repos.d/ https://nexus.chardma.org.uk/repository/configs/yum.repos.d/ntop-ng.repo --no-check-certificate
+RUN             wget -P /etc/yum.repos.d/ https://nexus.chardma.org.uk/repository/configs/yum.repos.d/epel.repo --no-check-certificate
 RUN             yum install -y -q ntopng mysql-devel
 RUN             touch /etc/ntopng/ntopng.start
 COPY            conf.d/ntopng.conf /etc/ntopng/ntopng.conf
