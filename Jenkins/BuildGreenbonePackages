@@ -3,15 +3,11 @@ pipeline{
         REGISTRY = 'registry.chardma.org.uk:8443'
         GIT_URL = 'https://github.com/greenbone/'
     }
+    agent {
+        docker { image 'debian:latest' }
+    }
     agent { label "$HOST" }
     stages{
-        stage('Create Debian image'){
-            steps{
-                dir('debian'){
-                    sh 'debootstrap --arch amd64 sid ./ http://ftp.debian.org/debian/'
-                }
-            }
-        }
         stage('Matrix push docker images'){
             matrix{
                 axes{
@@ -36,7 +32,7 @@ pipeline{
 
                         }
                     }
-                    stage("Run make commands") {
+                    stage("Run make command for ${PACKAGE}") {
                         steps {
                             git branch: 'master',
                                     /* credentialsId: 'my_cred_id', */
@@ -50,7 +46,7 @@ pipeline{
                             }
                         }
                     }
-                    stage("Push package to registry") {
+                    stage("Push ${PACKAGE} to registry") {
                         steps {
                             echo 'here we push to repo'
                         }
