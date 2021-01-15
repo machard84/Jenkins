@@ -5,7 +5,7 @@ pipeline{
     }
     agent {
         docker {
-            labddel 'tristram'
+            label 'tristram'
             image "registry.chardma.org.uk:8443/debian:latest"
             args  '-u root'
         }
