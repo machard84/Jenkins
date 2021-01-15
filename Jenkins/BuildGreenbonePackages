@@ -25,18 +25,19 @@ pipeline{
                 stages{
                     stage("Run make command for ${PACKAGE}") {
                         steps {
-                            git branch: 'master',
-                                    /* credentialsId: 'my_cred_id', */
-                                    url: '${GIT_URL}/${PACKAGE}.git'
+                            git branch: 'master'
+                            /* credentialsId: 'my_cred_id', */
+                            url: '${GIT_URL}/${PACKAGE}.git'
                         }
-                        stage("create build directory") {
-                            steps {
-                                dir("${WORKSPACE}/${PACKAGE}"){
-                                    sh 'mkdir build'
-                                }
-
+                    }
+                    stage("create build directory") {
+                        steps {
+                            dir("${WORKSPACE}/${PACKAGE}"){
+                                sh 'mkdir build'
                             }
                         }
+                    }
+                    stage("run make steps"){
                         steps {
                             dir("${WORKSPACE}/${PACKAGE}/build"){
                                 sh 'cmake ..'
