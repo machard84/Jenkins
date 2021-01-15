@@ -1,10 +1,14 @@
 pipeline{
     environment {
         REGISTRY = 'registry.chardma.org.uk:8443'
-        GIT_URL = 'https://github.com/greenbone/'
+        GIT_URL  = 'https://github.com/greenbone/'
     }
     agent {
-        docker { image 'debian:latest' }
+        docker {
+            label 'tristram'
+            image '${REGISTRY}/debian:latest'
+            args  '-u root'
+        }
     }
     stages{
         stage('install packages in docker container'){
@@ -38,7 +42,7 @@ pipeline{
                             dir('${PACKAGE}') {
                                 git url: '${GIT_URL}/${PACKAGE}.git',
                                         branch: 'master'
-                                /* credentialsId: 'my_cred_id', */
+                                /*      credentialsId: 'my_cred_id', */
                             }
                         }
                     }
