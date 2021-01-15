@@ -7,5 +7,5 @@ RUN             yum install -y -q ntopng mysql-devel
 RUN             touch /etc/ntopng/ntopng.start
 COPY            conf.d/ntopng.conf /etc/ntopng/ntopng.conf
 EXPOSE          3443 5666
-ENTRYPOINT      ["/usr/local/bin/ntopng"]
+ENTRYPOINT      ["/usr/bin/ntopng"]
 CMD             ["-W", "3443", "-G", "/var/tmp/ntopng.pid", "-i", "tcp://0.0.0.0:5666c", "-r", "redis:6379:syslog", "--community", "-F", "mysql;mysql;ntopng;flows;ntopng;ntopng"]

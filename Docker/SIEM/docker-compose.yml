@@ -20,25 +20,25 @@ volumes:
   suricata:
   bro:
 
-x-logging:
-  &default-logging
-    driver: syslog
-    options:
-      syslog-address: "tcp://127.0.0.1:514"
-      tag: "{{.Name}}/{{.ID}}"
-      syslog-format: rfc3164
+#x-logging:
+#  &default-logging
+#    driver: syslog
+#    options:
+#      syslog-address: "tcp://127.0.0.1:514"
+#      tag: "{{.Name}}/{{.ID}}"
+#      syslog-format: rfc3164
 
 services:
   MongoDB:
-    image: 127.0.0.1:5000/mongodb:$BUILD_NUMBER
+    image: registry.chardma.org.uk:8443/mongodb:$BUILD_NUMBER
     build:
       context: MongoDB
       shm_size: '2G'
     deploy:
-      placement:
-        constraints:
-          - node.hostname==adh-031
-          - node.hostname==adh-032
+#      placement:
+#        constraints:
+#          - node.hostname==adh-031
+#          - node.hostname==adh-032
       replicas: 1
       resources:
         limits:
@@ -52,10 +52,10 @@ services:
     user: mongod
     volumes:
       - mongodb:/var/lib/mongodb
-    logging: *default-logging
+#    logging: *default-logging
 
   WFE:
-    image: 127.0.0.1:5000/wfe:$BUILD_NUMBER
+    image: registry.chardma.org.uk:8443/wfe:$BUILD_NUMBER
     build:
       context: WFE
       shm_size: '2G'
@@ -75,10 +75,10 @@ services:
     depends_on:
       - Syslog-NG
       - MongoDB
-    logging: *default-logging
+#    logging: *default-logging
 
   elasticsearch:
-    image: 127.0.0.1:5000/elasticsearch:$BUILD_NUMBER
+    image: registry.chardma.org.uk:8443/elasticsearch:$BUILD_NUMBER
     build:
       context: Elasticsearch
       shm_size: '2G'
@@ -97,17 +97,17 @@ services:
     depends_on:
       - Syslog-NG
       - MongoDB
-    logging: *default-logging
+#    logging: *default-logging
 
   Snort:
-    image: 127.0.0.1:5000/snort:$BUILD_NUMBER
+    image: registry.chardma.org.uk:8443/snort:$BUILD_NUMBER
     build:
       context: Snort
       shm_size: '2G'
     deploy:
-      placement:
-        constraints:
-          - node.hostname==adh-030
+#      placement:
+#        constraints:
+#          - node.hostname==adh-030
       replicas: 1
       resources:
         limits:
@@ -123,17 +123,17 @@ services:
       - snort:/var/log/snort
     depends_on:
       - Syslog-NG
-    logging: *default-logging
+#    logging: *default-logging
 
   Suricata:
-    image: 127.0.0.1:5000/suricata:$BUILD_NUMBER
+    image: registry.chardma.org.uk:8443/suricata:$BUILD_NUMBER
     build:
       context: Suricata
       shm_size: '2G'
     deploy:
-      placement:
-        constraints:
-          - node.hostname==adh-030
+#      placement:
+#        constraints:
+#          - node.hostname==adh-030
       replicas: 1
       resources:
         limits:
@@ -148,10 +148,10 @@ services:
       - suricata:/var/log/suricata
     depends_on:
       - Syslog-NG
-    logging: *default-logging
+#    logging: *default-logging
 
   nTop-NG:
-    image: 127.0.0.1:5000/ntop-ng:$BUILD_NUMBER
+    image: registry.chardma.org.uk:8443/ntop-ng:$BUILD_NUMBER
     build:
       context: nTop-NG/nTop
       shm_size: '2G'
@@ -174,17 +174,17 @@ services:
     depends_on:
       - Syslog-NG
       - Redis
-    logging: *default-logging
+#    logging: *default-logging
 
   nProbe:
-    image: 127.0.0.1:5000/nprobe:$BUILD_NUMBER
+    image: registry.chardma.org.uk:8443/nprobe:$BUILD_NUMBER
     build:
       context: nTop-NG/nProbe
       shm_size: '2G'
     deploy:
-      placement:
-        constraints:
-          - node.hostname==adh-030
+#      placement:
+#        constraints:
+#          - node.hostname==adh-030
       replicas: 1
       resources:
         limits:
@@ -203,19 +203,19 @@ services:
     depends_on:
       - Syslog-NG
       - MongoDB
-    logging: *default-logging
+#    logging: *default-logging
 
   Redis:
     user: redis
-    image: 127.0.0.1:5000/redis:$BUILD_NUMBER
+    image: registry.chardma.org.uk:8443/redis:$BUILD_NUMBER
     build:
       context: nTop-NG/Redis
       shm_size: '2G'
     deploy:
-      placement:
-        constraints:
-          - node.hostname==adh-031
-          - node.hostname==adh-032
+#      placement:
+#        constraints:
+#          - node.hostname==adh-031
+#          - node.hostname==adh-032
       replicas: 1
       resources:
         limits:
@@ -228,10 +228,10 @@ services:
     hostname: redis
     depends_on:
       - Syslog-NG
-    logging: *default-logging
+#   logging: *default-logging
 
   Syslog-NG:
-    image: 127.0.0.1:5000/syslog-ng:$BUILD_NUMBER
+    image: registry.chardma.org.uk:8443/syslog-ng:$BUILD_NUMBER
     build:
       context: Syslog-NG
       shm_size: '2G'
@@ -255,14 +255,14 @@ services:
       - 514:514/tcp
 
   Bro:
-    image: 127.0.0.1:5000/bro:$BUILD_NUMBER
+    image: registry.chardma.org.uk:8443/bro:$BUILD_NUMBER
     build:
       context: Bro
       shm_size: '2G'
     deploy:
-      placement:
-        constraints:
-          - node.hostname==adh-030
+#      placement:
+#        constraints:
+#          - node.hostname==adh-030
       replicas: 1
       resources:
         limits:
@@ -282,4 +282,4 @@ services:
       - bro:/opt/bro/logs/current
     depends_on:
       - Syslog-NG
-    logging: *default-logging
+#   logging: *default-logging
