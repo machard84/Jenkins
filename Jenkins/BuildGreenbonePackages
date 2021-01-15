@@ -6,7 +6,6 @@ pipeline{
     agent {
         docker { image 'debian:latest' }
     }
-    agent { label "$HOST" }
     stages{
         stage('Matrix push docker images'){
             matrix{
