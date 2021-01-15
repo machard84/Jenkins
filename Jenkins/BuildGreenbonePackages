@@ -6,7 +6,7 @@ pipeline{
     agent {
         docker {
             label 'tristram'
-            image '${REGISTRY}/debian:latest'
+            image "${REGISTRY}/debian:latest"
             args  '-u root'
         }
     }
