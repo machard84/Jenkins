@@ -1,0 +1,75 @@
+pipeline{
+    environment {
+        REGISTRY = 'registry.chardma.org.uk:8443'
+        GIT_URL = 'https://github.com/greenbone/'
+    }
+    agent { label "$HOST" }
+    stages{
+        stage('Create Debian image'){
+            steps{
+                dir('debian'){
+                    sh 'debootstrap --arch amd64 sid ./ http://ftp.debian.org/debian/'
+                }
+            }
+        }
+        stage('Matrix push docker images'){
+            matrix{
+                axes{
+                    axis{
+                        name    PACKAGE
+                        values  "gvm-libs",
+                                "openvas",
+                                "gvmd",
+                                "openvas-smb",
+                                "gsa",
+                                "ospd-openvas",
+                                "ospd",
+                                "pheme"
+                    }
+                }
+                stages{
+                    stage("create build directory") {
+                        steps {
+                            dir("${WORKSPACE}/${PACKAGE}"){
+                                sh 'mkdir build'
+                            }
+
+                        }
+                    }
+                    stage("Run make commands") {
+                        steps {
+                            git branch: 'master',
+                                    /* credentialsId: 'my_cred_id', */
+                                    url: '${GIT_URL}/${PACKAGE}.git'
+                        }
+                        steps {
+                            dir("${WORKSPACE}/${PACKAGE}"){
+                                sh 'cmake ..'
+                                sh 'make'
+                                sh 'make package'
+                            }
+                        }
+                    }
+                    stage("Push package to registry") {
+                        steps {
+                            echo 'here we push to repo'
+                        }
+                    }
+                }
+            }
+        }
+    }
+    post {
+        always {
+            echo 'Clean up'
+            cleanWs()
+            deleteDir()
+        }
+        success {
+            echo 'Success'
+        }
+        failure {
+            echo 'Fail'
+        }
+    }
+}
