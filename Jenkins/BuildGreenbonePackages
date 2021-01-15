@@ -23,7 +23,7 @@ pipeline{
                     }
                 }
                 stages{
-                    stage("Run make command for ${PACKAGE}") {
+                    stage("Pull from git repositories") {
                         steps {
                             git branch: 'master'
                             /* credentialsId: 'my_cred_id', */
