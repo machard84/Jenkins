@@ -25,9 +25,11 @@ pipeline{
                 stages{
                     stage("Pull from git repositories") {
                         steps {
-                            git branch: 'master'
-                            /* credentialsId: 'my_cred_id', */
-                            url: '${GIT_URL}/${PACKAGE}.git'
+                            dir('${PACKAGE}') {
+                                git url: '${GIT_URL}/${PACKAGE}.git',
+                                        branch: 'master'
+                                /* credentialsId: 'my_cred_id', */
+                            }
                         }
                     }
                     stage("create build directory") {
@@ -46,7 +48,7 @@ pipeline{
                             }
                         }
                     }
-                    stage("Push ${PACKAGE} to registry") {
+                    stage("Push built package to registry") {
                         steps {
                             echo 'here we push to repo'
                         }
