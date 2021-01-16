@@ -22,13 +22,46 @@ pipeline{
                 sh 'apt install -y yarn software-properties-common cmake pkg-config libglib2.0-dev libgpgme-dev libgnutls28-dev uuid-dev libssh-gcrypt-dev libldap2-dev doxygen graphviz libradcli-dev libhiredis-dev libpcap-dev bison libksba-dev libsnmp-dev gcc-mingw-w64 heimdal-dev libpopt-dev xmltoman redis-server xsltproc libical-dev postgresql postgresql-contrib postgresql-server-dev-all gnutls-bin nmap rpm nsis curl wget fakeroot gnupg sshpass socat snmp smbclient libmicrohttpd-dev libxml2-dev python-polib gettext rsync xml-twig-tools python3-paramiko python3-lxml python3-defusedxml python3-pip python3-psutil virtualenv vim git xsltproc xmltoman texlive-latex-extra texlive-fonts-recommended'
             }
         }
+        stage('Build requirements'){
+            matrix{
+                axes{
+                    axis{
+                        name    REQUIREMENT
+                        values  "gvm-libs",
+                    }
+                }
+                stages{
+                    stage('fetch package requirements'){
+                        steps{
+                            dir("${REQUIREMENT}"){
+                                git url: "${GIT_URL}/${REQUIREMENT}.git"
+                                    branch: 'master'
+                            }
+                        }
+                    }
+                    stage('create build directory'){
+                        steps{
+                            dir("${WORKSPACE}/${REQUIREMENT}"){
+                                sh 'mkdir build'
+                            }
+                        }
+                    }
+                    stage('run make steps'){
+                        dir("${WORKSPACE}/${REQUIREMENT}/build"){
+                            sh 'cmake ..'
+                            sh 'make'
+                            sh 'make install'
+                        }
+                    }
+                }
+            }
+        }
         stage('Build packages'){
             matrix{
                 axes{
                     axis{
                         name    PACKAGE
-                        values  "gvm-libs",
-                                "openvas",
+                        values  "openvas",
                                 "gvmd",
                                 "openvas-smb",
                                 "gsa",
@@ -59,13 +92,8 @@ pipeline{
                             dir("${WORKSPACE}/${PACKAGE}/build"){
                                 sh 'cmake ..'
                                 sh 'make'
-                                sh 'make package'
+                                sh 'make install'
                             }
-                        }
-                    }
-                    stage("Push built package to registry") {
-                        steps {
-                            echo 'here we push to repo'
                         }
                     }
                 }
