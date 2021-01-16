@@ -34,7 +34,7 @@ pipeline{
                 axes{
                     axis{
                         name    REQUIREMENT
-                        values  "gvm-libs",
+                        values  "gvm-libs"
                     }
                 }
                 stages{
