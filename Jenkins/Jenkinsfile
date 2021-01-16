@@ -40,8 +40,8 @@ pipeline{
                 stages{
                     stage("Pull from git repositories") {
                         steps {
-                            dir('${PACKAGE}') {
-                                git url: '${GIT_URL}/${PACKAGE}.git',
+                            dir("${PACKAGE}") {
+                                git url: "${GIT_URL}/${PACKAGE}.git",
                                         branch: 'master'
                                 /*      credentialsId: 'my_cred_id', */
                             }
