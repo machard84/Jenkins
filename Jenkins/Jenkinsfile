@@ -13,6 +13,7 @@ pipeline{
     stages{
         stage('install packages in docker container'){
             steps{
+                sh 'echo "debconf debconf/frontend select Noninteractive" | debconf-set-selections'
                 sh 'apt install -y curl'
                 sh 'curl -sL https://deb.nodesource.com/setup_10.x | bash -'
                 sh 'curl -sSL https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -'
