@@ -41,7 +41,7 @@ pipeline{
                     stage('fetch package requirements'){
                         steps{
                             dir("${REQUIREMENT}"){
-                                git url: "${GIT_URL}/${REQUIREMENT}.git"
+                                git url: "${GIT_URL}/${REQUIREMENT}.git",
                                     branch: 'master'
                             }
                         }
