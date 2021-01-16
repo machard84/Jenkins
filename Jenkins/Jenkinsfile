@@ -54,10 +54,12 @@ pipeline{
                         }
                     }
                     stage('run make steps'){
-                        dir("${WORKSPACE}/${REQUIREMENT}/build"){
-                            sh 'cmake ..'
-                            sh 'make'
-                            sh 'make install'
+                        steps{
+                            dir("${WORKSPACE}/${REQUIREMENT}/build"){
+                                sh 'cmake ..'
+                                sh 'make'
+                                sh 'make install'
+                            }
                         }
                     }
                 }
