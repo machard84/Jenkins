@@ -1,0 +1,92 @@
+#!/usr/bin/env groovy
+
+def jobs = [
+    "Bro",
+    "Elasticsearch",
+    "MongoDB",
+    "Snort",
+    "Suricata",
+    "Syslog-NG",
+    "WFE",
+    "Redis",
+    "nProbe",
+    "nTop-NG",
+]
+def parallelStagesMap = jobs.collectEntries{
+    [ "${it}" : generateStage(it) ]
+}
+def generateStage(job){
+    return{
+        stage("Build ${job}") {
+            dir("${job}") {
+                registry = "127.0.0.1:5000/${job}".toLowerCase()
+                dockerImage = docker.build registry + ":$BUILD_NUMBER"
+                dockerImage.push()
+            }
+        }
+    }
+}
+pipeline{
+    agent { label 'adh-030' }
+    stages{
+        stage('Create CentOS Image') {
+            environment {
+                CENTOS_VERSION = '7'
+                CENTOS_URL = "http://mirror.centos.org/centos/${env.CENTOS_VERSION}/os/x86_64/Packages/"
+                CENTOS_RELEASE = sh(
+                        returnStdout: true,
+                        script: "curl -s http://mirror.centos.org/centos/${env.CENTOS_VERSION}/os/x86_64/Packages/ | grep -oE centos-release-[a-z0-9.-]+.centos.x86_64.rpm | uniq"
+                )
+            }
+            steps{
+                script{
+                    dir('centos'){
+                        sh "wget ${env.CENTOS_URL}/${env.CENTOS_RELEASE}"
+                        sh "sudo rpm -ivh --force --root=${env.WORKSPACE}/centos --nodeps ${env.CENTOS_RELEASE}"
+                        sh "sudo yum --installroot=${WORKSPACE}/centos --noplugins --nogpgcheck --releasever=7 install -y yum yum-plugin-ovl"
+                        sh 'sudo rm -f etc/yum.repos.d/*.repo'
+                        sh 'sudo wget -P etc/yum.repos.d/ http://10.0.33.55:8081/repository/configs/yum.repos.d/CentOS.repo'
+                        sh "tar -C . -c . | docker import - 127.0.0.1:5000/centos:${env.CENTOS_VERSION}"
+                    }
+                }
+            }
+        }
+        stage("Build DAG image") {
+            steps{
+                script{
+                    dir("dag") {
+                        registry = "127.0.0.1:5000/dag"
+                        dockerImage = docker.build registry + ":latest"
+                        dockerImage.push()
+                    }
+                }
+            }
+        }
+        stage('Build SIEM Containers') {
+            steps{
+                script{
+                    parallel parallelStagesMap
+                }
+            }
+        }
+    }
+    post{
+        success{
+            script{
+                dir("$WORKSPACE"){
+                    sh "docker stack deploy -c docker-compose.yml siem"
+                }
+                updateGitlabCommitStatus name: 'build', state: 'success'
+                cleanWs()
+                deleteDir()
+            }
+        }
+        failure{
+            script{
+                updateGitlabCommitStatus name: 'build', state: 'failed'
+                cleanWs()
+                deleteDir()
+            }
+        }
+    }
+}
