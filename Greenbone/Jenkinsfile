@@ -74,9 +74,11 @@ pipeline{
                                 "gvmd",
                                 "openvas-smb",
                                 "gsa"
-                                /*"ospd-openvas",
+                                /*
+                                "ospd-openvas",
                                 "ospd",
-                                "pheme"*/
+                                "pheme"
+                                */
                     }
                 }
                 stages{
